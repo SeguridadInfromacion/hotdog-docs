@@ -51,7 +51,7 @@ docker compose start orders-service
 bash scripts/security-checks.sh
 ```
 
-Son 47 ataques y verificaciones reales contra el sistema en ejecución. Mientras
+Son 61 ataques y verificaciones reales contra el sistema en ejecución. Mientras
 corre, comenta los más vistosos:
 
 | Sección | Qué decir |
@@ -60,8 +60,9 @@ corre, comenta los más vistosos:
 | 4 | "El cajero intenta crear un producto llamando a la API directamente: 403. El frontend no es la defensa; el servidor sí." |
 | 5 | "Fabrico un token que dice que soy admin, sin firma. Rechazado. Tomo un token real de cajero y le cambio el rol. Rechazado: la firma ya no coincide." |
 | 6 | "Envío una venta con precio de 1 peso. Rechazada: el precio lo pone el servidor." |
+| 6b | "Copio el token de un cajero. Funciona. El cajero cierra sesión. El token copiado ya no sirve: salir invalida el token, no solo borra la cookie." |
 | 8 | "Los contenedores no corren como root y su disco es de solo lectura." |
-| 9 | "El servicio de ventas no puede ni ver la base de productos. Y el usuario de la base no puede borrar la auditoría." |
+| 9 | "El servicio de ventas no puede ni ver la base de productos, y el frontend no puede saltarse el gateway. El usuario de la base no puede borrar la auditoría ni las ventas." |
 | 10 | "25 intentos de login seguidos: el gateway frena la mayoría con 429." |
 
 Después de la sección 10 espera un minuto antes de volver a iniciar sesión.
