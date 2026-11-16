@@ -15,7 +15,7 @@ flowchart LR
         G[gateway<br/>nginx]
     end
 
-    subgraph backend [Red backend · interna, sin internet]
+    subgraph backend [Redes internas sin internet, una por cada flecha]
         F[frontend<br/>Vue 3]
         A[auth-service<br/>FastAPI]
         P[products-service<br/>FastAPI]
@@ -42,9 +42,10 @@ flowchart LR
     O --> DO
 ```
 
-Son **8 contenedores** en **5 redes**. El único puerto publicado es el del
-gateway. Cada servicio tiene su propia base de datos y ninguno puede alcanzar la
-base de otro.
+Son **8 contenedores** en **9 redes**: cada flecha del diagrama es una red
+interna propia, así que dos contenedores solo se ven si de verdad necesitan
+hablarse. El único puerto publicado es el del gateway. Cada servicio tiene su
+propia base de datos y ninguno puede alcanzar la base de otro.
 
 ## Repositorios
 
@@ -68,16 +69,18 @@ Solo se necesita Docker. Las instrucciones están en
 - [Controles de seguridad](SEGURIDAD.md): qué protege al sistema y en qué archivo está cada control.
 - [Modelo de amenazas](MODELO-DE-AMENAZAS.md): qué puede salir mal y cómo se mitiga (STRIDE).
 - [Guion de la demo](DEMO.md): paso a paso para mostrarlo en clase.
+- [Revisión independiente](REVISION.md): qué encontraron los revisores y cómo se corrigió.
 
 ## Cómo viaja una venta
 
 1. El cajero inicia sesión. `auth-service` verifica la contraseña (Argon2id) y
    firma un JWT con su **llave privada**. El token llega al navegador en una
-   cookie `HttpOnly`.
+   cookie `HttpOnly`, dura 10 minutos y el navegador lo renueva solo.
 2. El cajero arma el pedido y lo envía: solo **ids y cantidades**, nunca precios.
 3. El gateway aplica límite de peticiones y reenvía a `orders-service`.
-4. `orders-service` verifica el token con la **llave pública** y le pregunta a
-   `products-service` el precio oficial de cada producto, reenviando el token.
-5. `products-service` verifica el token **otra vez** y responde.
+4. `orders-service` verifica el token con la **llave pública** y le pide a
+   `products-service` el menú oficial (una sola llamada), reenviando el token.
+5. `products-service` verifica el token **otra vez** y responde. `orders-service`
+   valida esa respuesta antes de usarla.
 6. `orders-service` calcula el total, guarda la venta y deja el registro en su
    bitácora de auditoría.
