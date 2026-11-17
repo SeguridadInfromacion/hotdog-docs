@@ -64,6 +64,7 @@ propia base de datos y ninguno puede alcanzar la base de otro.
 Solo se necesita Docker. Las instrucciones están en
 [hotdog-infra](https://github.com/SeguridadInfromacion/hotdog-infra#ponerlo-a-andar).
 
+
 ## Documentos
 
 - [Documentación del sistema](DOCUMENTACION.md): arquitectura, datos, API, sesión y cómo levantarlo.
