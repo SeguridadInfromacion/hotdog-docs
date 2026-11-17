@@ -66,6 +66,7 @@ Solo se necesita Docker. Las instrucciones están en
 
 ## Documentos
 
+- [Documentación del sistema](DOCUMENTACION.md): arquitectura, datos, API, sesión y cómo levantarlo.
 - [Controles de seguridad](SEGURIDAD.md): qué protege al sistema y en qué archivo está cada control.
 - [Modelo de amenazas](MODELO-DE-AMENAZAS.md): qué puede salir mal y cómo se mitiga (STRIDE).
 - [Guion de la demo](DEMO.md): paso a paso para mostrarlo en clase.
